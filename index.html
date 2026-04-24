@@ -4,44 +4,393 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LeonAI | Indie Game Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 0; padding: 0; color: #333; text-align: center; background-color: #fcfcfc; }
-        header { padding: 80px 20px; background: linear-gradient(135deg, #1a1a1a, #333); color: white; }
-        h1 { margin: 0; font-size: 2.5rem; letter-spacing: -1px; }
-        p.tagline { font-size: 1.2rem; opacity: 0.9; margin-top: 10px; }
-        section { max-width: 800px; margin: 50px auto; padding: 0 20px; }
-        .game-card { background: white; border-radius: 12px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee; margin-top: -40px; }
-        footer { margin-top: 100px; padding: 40px; font-size: 0.9rem; color: #888; border-top: 1px solid #eee; }
-        a { color: #0066cc; text-decoration: none; font-weight: 500; }
-        a:hover { text-decoration: underline; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #08101a;
+            --surface: #0e1b2a;
+            --surface2: #132336;
+            --border: rgba(255,255,255,0.07);
+            --text: #f0f3f8;
+            --muted: #7898b0;
+            --accent: #2563eb;
+            --accent2: #60a5fa;
+            --gold: #f0b429;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 48px;
+            background: rgba(8,16,26,0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-logo {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-links a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--text); }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            text-align: center;
+            padding: 120px 24px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(37,99,235,0.18) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(37,99,235,0.12);
+            border: 1px solid rgba(37,99,235,0.3);
+            border-radius: 999px;
+            padding: 6px 16px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--accent2);
+            margin-bottom: 28px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .hero h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: clamp(3.5rem, 10vw, 7rem);
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #fff 30%, var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+        .hero .tagline {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            color: var(--muted);
+            max-width: 500px;
+            margin: 0 auto 40px;
+        }
+        .hero-cta {
+            display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+        }
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #fff;
+            box-shadow: 0 4px 24px rgba(37,99,235,0.35);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(37,99,235,0.5);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent2); }
+
+        /* SECTION */
+        .section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 100px 24px;
+        }
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent2);
+            margin-bottom: 12px;
+        }
+        .section-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: clamp(2rem, 5vw, 2.75rem);
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .section-sub {
+            color: var(--muted);
+            max-width: 560px;
+            font-size: 1.05rem;
+        }
+        .section-header { margin-bottom: 56px; }
+
+        /* DIVIDER */
+        .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+        /* ABOUT */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        .about-text p { color: var(--muted); margin-bottom: 16px; font-size: 1.05rem; }
+        .stat-row { display: flex; gap: 32px; margin-top: 32px; }
+        .stat { text-align: center; }
+        .stat-num {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+
+        .about-visual {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+        }
+        .about-visual .icon-row {
+            display: flex; justify-content: center; gap: 16px; margin-bottom: 24px;
+        }
+        .icon-chip {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 18px;
+            font-size: 1.4rem;
+        }
+        .about-visual h3 { font-family: 'Fredoka', sans-serif; font-size: 1.3rem; margin-bottom: 8px; }
+        .about-visual p { color: var(--muted); font-size: 0.9rem; }
+
+        /* GAMES GRID */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+        .game-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.25s;
+            display: flex; flex-direction: column;
+        }
+        .game-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(37,99,235,0.4);
+            box-shadow: 0 12px 40px rgba(37,99,235,0.15);
+        }
+        .game-card-img {
+            width: 100%; aspect-ratio: 16/9;
+            object-fit: cover;
+            background: #0d0918;
+        }
+        .game-card-img-placeholder {
+            width: 100%; aspect-ratio: 16/9;
+            background: linear-gradient(135deg, #0a1535, #0a1f60);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 3rem;
+        }
+        .game-card-img.contain {
+            object-fit: contain;
+            padding: 20px;
+        }
+        .game-card-body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+        .game-platform {
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent2);
+            margin-bottom: 8px;
+        }
+        .game-card h3 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .game-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 20px; flex: 1; }
+        .game-status {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 0.8rem; font-weight: 600;
+            padding: 4px 12px; border-radius: 999px;
+        }
+        .status-live { background: rgba(16,185,129,0.12); color: #34d399; border: 1px solid rgba(52,211,153,0.25); }
+        .status-soon { background: rgba(251,191,36,0.12); color: #fbbf24; border: 1px solid rgba(251,191,36,0.25); }
+        .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+        /* FOOTER */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 48px 24px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.875rem;
+        }
+        footer .footer-nav { display: flex; justify-content: center; gap: 24px; margin-bottom: 20px; flex-wrap: wrap; }
+        footer a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+        footer a:hover { color: var(--text); }
+
+        @media (max-width: 768px) {
+            nav { padding: 16px 20px; }
+            .nav-links { gap: 20px; }
+            .about-grid { grid-template-columns: 1fr; }
+            .stat-row { justify-content: center; }
+        }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>LeonAI</h1>
-    <p class="tagline">Independent game development from the Netherlands.</p>
-</header>
+<nav>
+    <a href="index.html" class="nav-logo">LeonAI</a>
+    <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#games">Games</a></li>
+        <li><a href="mailto:puzzlecompetitionapp@gmail.com">Contact</a></li>
+    </ul>
+</nav>
 
-<section>
-    <div class="game-card">
-        <h2>Puzzle Competition</h2>
-        <p>Challenge your mind and compete with players worldwide. Our flagship puzzle game built with Godot Engine for speed and strategy.</p>
-        <span style="color: #28a745; font-weight: bold;">Coming soon to Google Play</span>
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-badge">✦ Indie Game Studio</div>
+    <h1>LeonAI</h1>
+    <p class="tagline">Crafting competitive mobile puzzle experiences that are easy to learn, hard to master.</p>
+    <div class="hero-cta">
+        <a href="#games" class="btn btn-primary">See Our Games</a>
+        <a href="#about" class="btn btn-outline">About Us</a>
     </div>
 </section>
 
-<section>
-    <h3>About LeonAI</h3>
-    <p>We are focused on creating high-quality, competitive mobile puzzle experiences. Based in the Netherlands, we leverage modern technology to build games that are easy to learn but hard to master.</p>
-</section>
+<hr class="divider">
+
+<!-- ABOUT -->
+<div class="section" id="about">
+    <div class="about-grid">
+        <div class="about-text">
+            <p class="section-label">About LeonAI</p>
+            <h2 class="section-title">Built for players who love a challenge</h2>
+            <p>LeonAI is an independent game studio focused on building high-quality competitive mobile puzzle games. We combine thoughtful design with modern technology to create experiences that keep players coming back.</p>
+            <p>Our games feature daily competitive leaderboards, casual modes for everyone, and deep progression systems — all built with precision using the Godot Engine.</p>
+            <div class="stat-row">
+                <div class="stat">
+                    <div class="stat-num">2</div>
+                    <div class="stat-label">Games</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-num">120+</div>
+                    <div class="stat-label">Adventure Levels</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-num">∞</div>
+                    <div class="stat-label">Daily Challenges</div>
+                </div>
+            </div>
+        </div>
+        <div class="about-visual">
+            <div class="icon-row">
+                <div class="icon-chip">🧩</div>
+                <div class="icon-chip">🏆</div>
+                <div class="icon-chip">📱</div>
+            </div>
+            <h3>Competitive by design</h3>
+            <p>Daily challenges, global leaderboards, trophy systems — every feature is built around the thrill of competition and self-improvement.</p>
+        </div>
+    </div>
+</div>
+
+<hr class="divider">
+
+<!-- GAMES -->
+<div class="section" id="games">
+    <div class="section-header">
+        <p class="section-label">Our Games</p>
+        <h2 class="section-title">Play. Compete. Master.</h2>
+        <p class="section-sub">Mobile puzzle games for Android with daily competitive challenges, casual play, and adventure modes.</p>
+    </div>
+
+    <div class="games-grid">
+        <a href="puzzle-competition.html" class="game-card">
+            <img class="game-card-img contain" src="assets/Puzzle Competition/game_icons/icon.png" alt="Puzzle Competition">
+            <div class="game-card-body">
+                <p class="game-platform">Android · Puzzle</p>
+                <h3>Puzzle Competition</h3>
+                <p>Two games in one: Tap Blitz and Block Drop. Compete daily on global leaderboards, play casual on past dates, or conquer adventure levels.</p>
+                <span class="game-status status-live"><span class="status-dot"></span>Available now on Google Play</span>
+            </div>
+        </a>
+
+        <!-- Placeholder for future games -->
+        <div class="game-card" style="opacity:0.4; pointer-events:none;">
+            <img class="game-card-img contain" src="assets/Puzzle Competition/game_construction.png" alt="Coming soon">
+            <div class="game-card-body">
+                <p class="game-platform">Android · Coming Soon</p>
+                <h3>Next Game</h3>
+                <p>More exciting puzzle experiences are in development. Stay tuned.</p>
+                <span class="game-status status-soon"><span class="status-dot"></span>In development</span>
+            </div>
+        </div>
+    </div>
+</div>
 
 <footer>
-    <p>&copy; 2026 LeonAI. All rights reserved.</p>
-    <p>
-        <a href="mailto:puzzlecompetitionapp@gmail.com">Contact Support</a> &nbsp;·&nbsp; 
+    <div class="footer-nav">
+        <a href="#about">About</a>
+        <a href="#games">Games</a>
+        <a href="puzzle-competition.html">Puzzle Competition</a>
         <a href="puzzle-competition-privacy-policy.html">Privacy Policy</a>
-    </p>
+        <a href="mailto:puzzlecompetitionapp@gmail.com">Contact Support</a>
+    </div>
+    <p>&copy; 2026 LeonAI. All rights reserved.</p>
 </footer>
 
 </body>
