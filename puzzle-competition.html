@@ -23,6 +23,7 @@
             --cyan: #06b6d4;
             --green: #22c55e;
             --red: #ef4444;
+            --purple: #a855f7;
         }
 
         html { scroll-behavior: smooth; }
@@ -141,8 +142,9 @@
             padding: 36px;
             display: flex; flex-direction: column;
         }
-        .game-face-front.tap  { border-top: 3px solid var(--accent); }
-        .game-face-front.block { border-top: 3px solid var(--blue); }
+        .game-face-front.tap   { border: 1px solid var(--accent); }
+        .game-face-front.block { border: 1px solid var(--purple); }
+        .game-face-front.fire  { border: 1px solid var(--gold); }
         .game-face-back {
             transform: rotateY(180deg);
             background: #000;
@@ -160,12 +162,12 @@
             pointer-events: none;
         }
 
-        /* GAMES: TAP BLITZ + BLOCK DROP */
+        /* GAMES GRID */
         .games-split {
             display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px;
         }
         .game-face-front.construction {
-            border-top: 3px solid var(--muted);
+            border: 1px solid var(--border);
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
             text-align: center; gap: 16px;
@@ -195,11 +197,7 @@
             cursor: pointer;
         }
         .game-panel.flipped { transform: rotateY(180deg); }
-        .game-panel.tap  { border-top: 3px solid var(--accent); }
-        .game-panel.block { border-top: 3px solid var(--blue); }
         .preview-hint { font-size: 0.72rem; color: var(--muted); opacity: 0.6; margin-top: auto; padding-top: 16px; }
-        .game-panel.tap { border-top: 3px solid var(--accent); }
-        .game-panel.block { border-top: 3px solid var(--blue); }
         .game-panel-header {
             display: flex; align-items: center; gap: 14px; margin-bottom: 24px;
         }
@@ -210,7 +208,8 @@
         .game-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .game-panel h3 { font-family: 'Fredoka', sans-serif; font-size: 1.5rem; font-weight: 600; }
         .game-panel .game-sub { font-size: 0.8rem; color: var(--accent2); font-weight: 500; }
-        .game-panel.block .game-sub { color: #60a5fa; }
+        .game-panel.block .game-sub { color: #c084fc; }
+        .game-panel.fire  .game-sub { color: var(--gold); }
 
         .game-panel p { color: var(--muted); margin-bottom: 20px; font-size: 0.95rem; }
 
@@ -220,7 +219,8 @@
             font-size: 0.9rem; color: var(--muted);
         }
         .spec-list li::before { content: '→'; color: var(--accent); flex-shrink: 0; font-weight: 700; }
-        .game-panel.block .spec-list li::before { color: var(--blue); }
+        .game-panel.block .spec-list li::before { color: var(--purple); }
+        .game-panel.fire  .spec-list li::before { color: var(--gold); }
         .spec-list li strong { color: var(--text); }
 
         .special-tiles { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
@@ -480,7 +480,7 @@
 <section class="hero">
     <div class="hero-badge">📱 Available on Android</div>
     <h1>Puzzle Competition</h1>
-    <p class="tagline">Two addictive puzzle games. One daily battleground. Compete against players worldwide for leaderboard glory.</p>
+    <p class="tagline">Three addictive puzzle games. One daily battleground. Compete against players worldwide for leaderboard glory.</p>
     <div class="hero-cta">
         <a href="#" class="btn btn-primary">Get on Google Play</a>
         <a href="#games" class="btn btn-outline">See the Games ↓</a>
@@ -499,9 +499,9 @@
 <!-- GAMES -->
 <div class="section" id="games">
     <div class="section-header">
-        <p class="section-label">Two Games</p>
+        <p class="section-label">Three Games</p>
         <h2 class="section-title">Pick your puzzle</h2>
-        <p class="section-sub">Each game has its own strategy, scoring system, and special tiles — but both share the same daily competitive arena.</p>
+        <p class="section-sub">Each game has its own strategy, scoring system, and mechanics — but all share the same daily competitive arena.</p>
     </div>
 
     <div class="games-split">
@@ -549,9 +549,7 @@
                     <div class="game-tags">
                         <span class="game-tag">8×8 grid</span>
                         <span class="game-tag">3 preview pieces</span>
-                        <span class="game-tag">No timer</span>
                         <span class="game-tag">Combo clears</span>
-                        <span class="game-tag">Infinite casual</span>
                     </div>
                     <p class="preview-hint">click to watch gameplay →</p>
                 </div>
@@ -562,7 +560,34 @@
             </div>
         </div>
 
-        <!-- THIRD GAME — IN CONSTRUCTION -->
+        <!-- FIREBALL -->
+        <div class="game-flip-wrap">
+            <div class="game-panel fire" onclick="flipGame(this)">
+                <div class="game-face game-face-front fire">
+                    <div class="game-panel-header">
+                        <div class="game-icon"><img src="assets/Puzzle Competition/game_icons/fire_ball.png" alt="Fireball"></div>
+                        <div>
+                            <h3>Fireball</h3>
+                            <div class="game-sub">Available May 17, 2026</div>
+                        </div>
+                    </div>
+                    <p>Launch fireballs to clear every tile off the 8×8 board. Aim carefully, chain reactions, and burn them all.</p>
+                    <div class="game-tags">
+                        <span class="game-tag">8×8 grid</span>
+                        <span class="game-tag">Ball physics</span>
+                        <span class="game-tag">Chain reactions</span>
+                        <span class="game-tag">Daily challenge</span>
+                    </div>
+                    <p class="preview-hint">click to watch gameplay →</p>
+                </div>
+                <div class="game-face game-face-back">
+                    <video src="assets/Puzzle Competition/game_recordings/fire_ball.mp4" muted playsinline loop></video>
+                    <div class="flip-back-hint">click to go back</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOURTH GAME — IN CONSTRUCTION -->
         <div class="game-flip-wrap">
             <div class="game-panel">
                 <div class="game-face game-face-front construction">
